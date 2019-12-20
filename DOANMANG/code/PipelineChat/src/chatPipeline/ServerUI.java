@@ -2,6 +2,7 @@ package chatPipeline;
 
 import java.awt.Button;
 import java.awt.ComponentOrientation;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
@@ -9,6 +10,7 @@ import java.awt.Label;
 import java.awt.Panel;
 import java.awt.TextArea;
 import java.awt.TextField;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -29,8 +31,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-
-import com.sun.prism.paint.Color;
+import java.awt.Color;
 
 
 public class ServerUI extends Frame implements Runnable,ActionListener {
@@ -43,7 +44,6 @@ public class ServerUI extends Frame implements Runnable,ActionListener {
 	static ScriptEngine engine;
 	private PipedInputStream in = new PipedInputStream();
 	private PipedOutputStream out = new PipedOutputStream();
-	String recevied="";
 	Font myFont1 = new Font(Font.MONOSPACED, Font.PLAIN, 14);
 	Font myFont2 = new Font(Font.SERIF, Font.BOLD | Font.ITALIC, 16);
 	public ServerUI(String clientTitle, PipedInputStream in,PipedOutputStream out) throws Exception{
@@ -55,14 +55,12 @@ public class ServerUI extends Frame implements Runnable,ActionListener {
 		engine = sem.getEngineByName("JavaScript");
 		System.out.println("Server is starting...");
 		Panel panelTop = new Panel();
-		panelTop.setLayout(new FlowLayout(FlowLayout.LEFT));
-		
-		panelContent = new JPanel();
-		
+		panelTop.setLayout(new FlowLayout(FlowLayout.LEFT));		
+		panelContent = new JPanel();		
 		taContent = new TextArea(30,50);
 		taContent.setEditable(false);
 		taContent.setText("Server is started!!!\n--------------------------\n");
-		taContent.setBackground(java.awt.Color.white);
+		taContent.setBackground(new Color(255, 204, 204));
 		panelContent.add(taContent);
 		
 		taContent.setFont(myFont1);
@@ -86,7 +84,13 @@ public class ServerUI extends Frame implements Runnable,ActionListener {
 				System.exit(0);
 			}
 		});	
-		
+		 Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		 int w = this.getSize().width;
+	     int h = this.getSize().height;
+	     int x = (dim.width-w)/2;
+	     int y = (dim.height-h)/2;
+	        // Move the window
+	        this.setLocation(x, y-60);
 		setResizable(false);
 	
 	}
@@ -139,46 +143,12 @@ public class ServerUI extends Frame implements Runnable,ActionListener {
 		try {
 			int len = in.read(buf);
 			System.out.println("Client: " + new String(buf, 0, len));
-			recevied=new String(buf,0,1024);
 			receiveDataFromClient(new String(buf, 0, len));
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
 		}
 	}
-	public static String UpcaseFull(String k)
-	{
-		String chuoi="";
-		for(int i=0;i<k.length();i++)
-		{
-			char ch = k.charAt(i);
-			if((int)ch>=97&&(int)ch<=122)
-			{
-				int o= (int)ch-32;
-				ch=(char)o;
-				chuoi+=ch;
-			}else chuoi+=ch;
-		}
-		return chuoi;
-		
-	}
-	public static String DowncaseFull(String k)
-	{
-		String chuoi="";
-		for(int i=0;i<k.length();i++)
-		{
-			char ch = k.charAt(i);
-			if((int)ch>=65&&(int)ch<=90)
-			{
-				int o= (int)ch+32;
-				ch=(char)o;
-				chuoi+=ch;
-			}chuoi+=ch;
-
-		}
-		return chuoi;
-	}
-
 	private void writeMessage(String tem) throws IOException 
 	{	
 		

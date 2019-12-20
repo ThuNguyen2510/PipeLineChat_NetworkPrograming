@@ -8,6 +8,7 @@ import java.awt.Label;
 import java.awt.Panel;
 import java.awt.TextArea;
 import java.awt.TextField;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -22,6 +23,11 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
+import java.awt.Color;
+import java.awt.Dimension;
 
 public class ClientUI extends Frame implements Runnable,ActionListener {
 	public static TextField txtMessage;
@@ -43,14 +49,16 @@ public class ClientUI extends Frame implements Runnable,ActionListener {
 		Panel panelTop = new Panel();
 		panelTop.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-		Panel panelContent = new Panel();
+		JPanel panelContent = new JPanel();
 		taContent = new TextArea(30, 50);
 		taContent.setEditable(false);
-		taContent.setBackground(java.awt.Color.white);
+		
+		taContent.setBackground(new Color(204, 255, 255));
+		taContent.setText("Client is started!!!\n--------------------------\n");
 		Font myFont1 = new Font(Font.MONOSPACED, Font.PLAIN, 14);
 		taContent.setFont(myFont1);
 		panelContent.add(taContent);
-
+		panelContent.setBorder(new EmptyBorder(5, 5, 5, 5));
 		Panel panelBottom = new Panel();
 		panelBottom.setLayout(new FlowLayout(FlowLayout.LEFT));
 		txtMessage = new TextField(45);
@@ -63,6 +71,9 @@ public class ClientUI extends Frame implements Runnable,ActionListener {
 		add(panelBottom, "South");
 
 		addEventForButton();
+		int w = this.getSize().width;
+	    int h = this.getSize().height;
+	    this.setLocation(w,h);
 		setVisible(true);
 		pack();
 
@@ -116,7 +127,7 @@ public class ClientUI extends Frame implements Runnable,ActionListener {
 			readMessage();
 		}
 	}	
-// xuwr ly o day
+// xu ly o day
 	private void writeMessage(String tem) {
 		try {
 			if(isSent){
